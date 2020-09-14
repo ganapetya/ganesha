@@ -68,15 +68,25 @@ public class DemoApplication {
 
     @GetMapping("/createPodGetLog")
     public String createPod() throws IOException, ApiException {
-        String podId = UUID.randomUUID().toString();
+
+        String podId = UUID.randomUUID().toString();  //This suffix provides unique pod ID per request
+
         ApiClient client = Config.defaultClient();
+
         Configuration.setDefaultApiClient(client);
-        CoreV1Api api = new CoreV1Api();
-        V1Pod pod = defineExampleCommandPod(podId);
-        V1Pod pod1 = createPod(api, pod);
-        String status = waitCompletedStatus(pod1, api);
-        String log = getLogs(api, pod1, podId);
-        deletePod(api, pod1);
+
+        CoreV1Api api = new CoreV1Api();             //this is our interface to K8S API
+
+        V1Pod pod = defineExampleCommandPod(podId);  //The pod defined programmatically
+
+        V1Pod pod1 = createPod(api, pod);            //The pod created and executed
+
+        String status = waitCompletedStatus(pod1, api);  //looping till Failure/Success
+
+        String log = getLogs(api, pod1, podId);     //getting log
+
+        deletePod(api, pod1);                       //deleting the pod
+
         return String.format("Pod exit status %s \nlogs:\n%s" ,status, log );
     }
 
