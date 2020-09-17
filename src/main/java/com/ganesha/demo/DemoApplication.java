@@ -87,7 +87,7 @@ public class DemoApplication {
 
         deletePod(api, pod1);                       //deleting the pod
 
-        return String.format("Pod exit status %s \nlogs:\n%s" ,status, log );
+        return String.format("Pod (Pet hello!) exit status %s \nlogs:\n%s" ,status, log );
     }
 
 
